@@ -17,30 +17,25 @@ mySet.prototype.addSet = function(number){
 		return 'The number already exists';
 	}
 
-	var min = 1000;
-	var arrayTemp = this.array;
+	var min = -1;
 
 	for (var i = 0; i < this.size; i ++){
-		if(number < this.array[i] && min > i){
+		if(number > this.array[i]){
 			min = i;
 		}
-		else if(number > this.array[i]){
-			min = -1;
+		else{
+			break;
 		}
 	}		
 	
-	if (min === -1) {
-		this.array[this.size] = number;
-		this.size += 1;
-		return;
+
+	this.size += 1;
+
+	for (var j = this.size -1; j > min + 1; j--) {
+		this.array[j] = this.array[j-1];
 	}
-	else{
-		this.array[min] = number;
-		this.size += 1;
-		for (var j = min + 1; j < this.size; j ++) {
-			this.array[j] = arrayTemp[j-1]; 
-		}
-	}
+	this.array[min + 1] = number;
+
 	
 	
 }
@@ -51,7 +46,6 @@ mySet.prototype.deleteSet = function(number){
 		return;
 	}
 
-	var arrayTemp = this.array;
 	var found = -1;
 	for (var i = 0; i < this.size; i ++){
 		if (number == this.array[i]){
@@ -59,8 +53,8 @@ mySet.prototype.deleteSet = function(number){
 		}
 	}		
 	
-	for (var i = found; i < arrayTemp.length -1; i ++) {
-		this.array[i] = arrayTemp[i+1]; 
+	for (var i = found; i < this.array.length - 1; i ++) {
+		this.array[i] = this.array[i+1]; 
 	}
 	this.size -= 1;
 }

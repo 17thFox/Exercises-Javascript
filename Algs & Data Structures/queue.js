@@ -13,9 +13,8 @@ myQueue.prototype.popQueue = function(){
 	{
 		return;
 	}
-	var arrayTemp = this.array;
-	for (var i = 1; i <= arrayTemp.length - 1; i ++) {
-		this.array[i-1] = arrayTemp[i]; 
+	for (var i = 1; i <= this.array.length - 1; i ++) {
+		this.array[i-1] = this.array[i]; 
 	}
 	this.size -= 1;
 }
