@@ -4,5 +4,40 @@
 
 <h1>Hello World!</h1>
 
+<form id="mySearchForm">
+<input type="text" id="searchInput" name="example" placeholder="ex. Narnia...">
+<input type="submit" value="Search">
+</form>
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="js/index.js"></script>
+
 </body>
-</html>
+
+<script>
+
+$("#mySearchForm").on('submit', function (event){
+	event.preventDefault();
+	var mySearchInput = this[0].value;
+	// this is an array containing all the forms' inputs.
+	// var omdb = 'https://www.omdbapi.com/?s=' + encodeURIComponent(mySearchInput);
+
+	$.ajax({
+	  method: "POST",
+	  url: "/search/movie/",
+	  data: {movie: mySearchInput},
+	})
+	 .done(function (data){
+	 	alert(data);
+	 });
+});
+
+
+
+	
+</script>
+
+
+</html>	
