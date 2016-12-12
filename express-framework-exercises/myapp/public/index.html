@@ -36,13 +36,40 @@ li{
 <script type="text/javascript" src="js/index.js"></script>
 
 <script>
+
+function debounce(func, wait, immediate) {
+
+	var timeout;  
+
+	return function() {
+
+		var context = this, args = arguments;
+
+		var callNow = immediate && !timeout;
+		
+		clearTimeout(timeout);   
+
+		timeout = setTimeout(function() {
+			timeout = null;
+
+            if (!immediate){
+            	func.apply(context, args);
+            }
+        }, wait);
+		
+		if (callNow) func.apply(context, args);  
+     }; 
+};
+
+
+
 $Container = $('#container');
 $Movies = $(".movie_details");
 $Movies.hide();
 
 
 
-$("#searchInput").on('keyup', function (event){
+$("#searchInput").on('keyup', debounce(function (event){
 	event.preventDefault();
 	var mySearchInput = $('#searchInput').val();
 	if (mySearchInput.length >= 3){
@@ -58,10 +85,17 @@ $("#searchInput").on('keyup', function (event){
 
 			for(var i = 0; i < myLength; i++){
 				console.log(data[i].Title);	
+				if (data[i].Poster == 'N/A'){	
+				 	$Movies.append(
+			          "<li>" + data[i].Title + " (" + data[i].Year + ")  (" + data[i].Type + ")  "
+			        )
+				}
+				else {
 			 	$Movies.append(
 		          "<li>" + data[i].Title + " (" + data[i].Year + ")  (" + data[i].Type + ")  " +
 		          "<img src=" + data[i].Poster + " height = '100' /> </li>" 
 		        )
+		        }
 		 	}
 		 	$Movies.show();
 		 });
@@ -71,7 +105,9 @@ $("#searchInput").on('keyup', function (event){
 		$Container.find('.results').text('You must enter at least 3 letters!').css('color', 'red');
 
 	 }
-});
+}, 400));
+
+
 
 
 // Beginning for dropdown search!
