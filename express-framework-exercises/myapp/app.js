@@ -7,7 +7,6 @@ var cache = require('lru-cache')({
     max_age : 1000 * 60 * 60     // The maximum life of a cached item in milliseconds
 });
 
-var myResponseJSON = {};
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -22,25 +21,17 @@ app.get('/', function(req, res) {
 });
 
 app.post('/search/movie', function(req, res) {
-
-    console.log("1. " + cache.get(req.body.movie));
-    if (cache.get(req.body.movie) === '' || !(cache.has(req.body.movie))) {
+    if (!(cache.has(req.body.movie))) {
 
         var omdbapiURL = 'https://www.omdbapi.com/?s=' + encodeURIComponent(req.body.movie).replace(/%20/g, "+");
 
-    	cache.set(req.body.movie);
-    	console.log(cache.get(req.body.movie));
-        console.log("went to: " + omdbapiURL);
-
         qhttp.read(omdbapiURL).then(function(json) {
             var responseJSON = JSON.parse(json);
-            cache.set(myResponseJSON, responseJSON["Search"]);
-            // console.log(cache.get(myResponseJSON));
+    		cache.set(req.body.movie, responseJSON["Search"]);
             res.send(responseJSON['Search']);
         }).then(null, console.error).done();
     } else {
-        console.log("got to: " + cache.get(myResponseJSON));
-    	res.send(cache.get(myResponseJSON));
+    	res.send(cache.get(req.body.movie));
     }
 });
 
