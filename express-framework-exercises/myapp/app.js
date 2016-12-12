@@ -2,11 +2,12 @@ var express = require('express');
 var app = express();
 var qhttp = require('q-io/http');
 
-var cachingObject = {
-    'myNewMovie': '',
-    'myLastMovie': '',
-    'myResponseJSON': {}
-};
+var cache = require('lru-cache')({  
+    max : 100,                   // The maximum number of items allowed in the cache
+    max_age : 1000 * 60 * 60     // The maximum life of a cached item in milliseconds
+});
+
+var myResponseJSON = {};
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -22,41 +23,28 @@ app.get('/', function(req, res) {
 
 app.post('/search/movie', function(req, res) {
 
-    cachingObject.myNewMovie = req.body.movie;
-
-    if (cachingObject.myLastMovie === '' || cachingObject.myLastMovie !== cachingObject.myNewMovie) {
+    console.log("1. " + cache.get(req.body.movie));
+    if (cache.get(req.body.movie) === '' || !(cache.has(req.body.movie))) {
 
         var omdbapiURL = 'https://www.omdbapi.com/?s=' + encodeURIComponent(req.body.movie).replace(/%20/g, "+");
 
+    	cache.set(req.body.movie);
+    	console.log(cache.get(req.body.movie));
         console.log("went to: " + omdbapiURL);
 
         qhttp.read(omdbapiURL).then(function(json) {
             var responseJSON = JSON.parse(json);
-            cachingObject.myLastMovie = req.body.movie;
-            cachingObject.myResponseJSON = responseJSON;
+            cache.set(myResponseJSON, responseJSON["Search"]);
+            // console.log(cache.get(myResponseJSON));
             res.send(responseJSON['Search']);
         }).then(null, console.error).done();
     } else {
-
-        console.log("got this: " + cachingObject.myResponseJSON['Search']);
-        res.send(cachingObject.myResponseJSON['Search']);
+        console.log("got to: " + cache.get(myResponseJSON));
+    	res.send(cache.get(myResponseJSON));
     }
-
 });
 
 
 app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
 });
-
-
-
-
-// daca scriu abc, dup-aia scriu repede si d si il sterg
-// sa nu caute iar dupa abc, daca a cautat prima data
-// pe server la fiecare raspuns primit de la omdb, 
-//sa cache-uiasca search string-ul si raspunsul intr-o 
-//variabila globala
-// si apoi, daca are deja raspunsul la search-ul cerut, 
-//backend-ul sa il dea direct fara sa mai mearga 
-//pana la omdb
