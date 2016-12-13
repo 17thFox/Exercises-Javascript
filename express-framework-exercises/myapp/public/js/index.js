@@ -54,11 +54,17 @@ $('#searchInput').on('keyup', debounce(function(event) {
                 $Movies.empty();
                 $Container.find('.results').text('You recieved: ' + myLength + ' results.').css('color', 'black');
 
-                for (var i = 0; i < myLength; i++) {
-	                if(context[i].Poster == 'N/A'){
-	                	context[i].Poster = '';
+                function notAvl(item){
+	                if(item.Poster == 'N/A'){
+	                	item.Poster = '';
 	                }
+	                return item;
 	            }
+	            console.log("This is 1 context " + context);
+
+	            console.log("This is context.map(notAvl) " + context.map(notAvl));
+	            context = context.map(notAvl);
+	            console.log("This is 2 context "+context);
 
 				// Pass our data to the template - HANDLEBARS
 				var theCompiledHtml = theTemplate(data);

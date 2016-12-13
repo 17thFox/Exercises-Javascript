@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var qhttp = require('q-io/http');
 
-require('handlebars');
 
 var cache = require('lru-cache')({  
     max : 100,                   // The maximum number of items allowed in the cache
