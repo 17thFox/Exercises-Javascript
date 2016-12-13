@@ -21,6 +21,10 @@ app.get('/', function(req, res) {
     res.send('Hello World!');
 });
 
+app.get('/cache', function(req, res) {
+    res.sendFile('public/cache.html' , { root : __dirname});
+});
+
 app.post('/search/movie', function(req, res) {
     if (!(cache.has(req.body.movie))) {
 

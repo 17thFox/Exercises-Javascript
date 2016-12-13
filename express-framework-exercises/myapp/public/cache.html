@@ -38,13 +38,23 @@ body {
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">Page 1</a></li>
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="/cache">Cache</a></li>
             <li><a href="#contact">Page 2</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+
+    <div class="container">
+
+    </div>
+
+
+<!-- as vrea sa am o functie care imi afiseaza tot ce am in cache respectiv una care imi permite sa clear-uiesc cache-ul
+ -->
+
+
 
 
 
@@ -57,6 +67,39 @@ body {
 <script type="text/javascript" src="js/index.js"></script>
 
 </body>
+
+<script type="text/javascript">
+// $.ajax({
+//             method: "POST",
+//             url: "/search/movie/",
+//             data: {
+//                 movie: mySearchInput
+//             },
+//         })
+//         .done(function(data) {
+//             var context = data['Search'];
+//             myLength = data['totalResults'];
+//             $Movies.empty();
+//             $Container.find('.results').text('You recieved: ' + myLength + ' results.').css('color', 'black');
+
+//             function notAvl(item){
+//                 if(item.Poster == 'N/A'){
+//                     item.Poster = '';
+//                 }
+//                 return item;
+//             }
+//             context = context.map(notAvl);
+
+//             // Pass our data to the template - HANDLEBARS
+//             var theCompiledHtml = theTemplate(data);
+
+//             // Add the compiled html to the page - HANDLEBARS
+//             $Movies.html(theCompiledHtml);
+
+//             $Movies.show();
+//         });
+
+</script>
 
 
 </html>
