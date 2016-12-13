@@ -2,50 +2,48 @@
 <html>
 
 <head>
-    <style type="text/css">
-        ul {
-            list-style-type: none;
-        }
-        
-        li {
-            margin: 0 0 5px 0;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 </head>
 
 <body>
 
-    <h1>Hello World!</h1>
 
-    <input type="text" id="searchInput" name="example" placeholder="ex. Narnia...">
-    <ul class="dropdown" id="dropdown"></ul>
+    <div class="container">
+        <h1>Hello World!</h1>
+        <input type="text" id="searchInput" name="example" placeholder="ex. Narnia...">
+    </div>
 
-
-
-
-    <div id="container">
+    <div class="container" id="container">
         <h3 class="results">Your total results will show here!</h3>
-        <ul class="movie_details">
+        <ul class="movie_details list-group">
         </ul>
     </div>
 
-</body>
 
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 
 <script type="text/javascript" src="js/index.js"></script>
 
+</body>
 <!--This is our template. -->
 <!--Data will be inserted in its according place, replacing the brackets.-->
 <script id="my_template" type="text/x-handlebars-template">
     {{#Search}} 
-        <li>
+        <li class="list-group-item">
             {{Title}} {{Year}} {{Type}}
 
             {{#if Poster}}
-                <img src=" {{Poster}} " height="100" />           
+                <img src=" {{Poster}} " class="img-rounded" height="100" />           
             {{/if}}
         </li>
     {{/Search}}
