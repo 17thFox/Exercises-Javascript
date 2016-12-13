@@ -22,7 +22,16 @@ app.get('/', function(req, res) {
 });
 
 app.get('/cache', function(req, res) {
-    res.sendFile('public/cache.html' , { root : __dirname});
+    res.send('It works, no?')
+});
+
+app.post('/cache/information', function(req, res){
+    res.send(cache.keys());
+});
+
+
+app.delete('/cache/information', function(req, res){
+    res.send(cache.reset()); 
 });
 
 app.post('/search/movie', function(req, res) {
@@ -33,6 +42,7 @@ app.post('/search/movie', function(req, res) {
         qhttp.read(omdbapiURL).then(function(json) {
             var responseJSON = JSON.parse(json);
     		cache.set(req.body.movie, responseJSON);
+            console.log(cache);
             res.send(responseJSON);
         }).then(null, console.error).done();
     } else {

@@ -18,6 +18,9 @@ body {
   padding-top: 70px;
   padding-bottom: 30px;
 }
+#place_holder{
+    margin-top: 10px;
+}
 </style>
 
 
@@ -39,7 +42,7 @@ body {
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/">Home</a></li>
-            <li class="active"><a href="/cache">Cache</a></li>
+            <li class="active"><a href="cache.html">Cache</a></li>
             <li><a href="#contact">Page 2</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -47,57 +50,85 @@ body {
     </nav>
 
     <div class="container">
+        <h3>Welcome to cache.html!</h3>
+        <button type="button" class="btn btn-success">Show Cache</button>
+        <button type="button" class="btn btn-danger">Clear Cache</button>
+    </div>
+
+    <div class="container" id="place_holder">
 
     </div>
 
-
-<!-- as vrea sa am o functie care imi afiseaza tot ce am in cache respectiv una care imi permite sa clear-uiesc cache-ul
- -->
-
-
-
-
-
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
-
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-
-<script type="text/javascript" src="js/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 
 </body>
 
+<script id="my_template_cache" type="text/x-handlebars-template">
+    {{#cache}} 
+        <li class="list-group-item">
+            {{found}}
+        </li>
+    {{/cache}}
+</script>
+
 <script type="text/javascript">
-// $.ajax({
-//             method: "POST",
-//             url: "/search/movie/",
-//             data: {
-//                 movie: mySearchInput
-//             },
-//         })
-//         .done(function(data) {
-//             var context = data['Search'];
-//             myLength = data['totalResults'];
-//             $Movies.empty();
-//             $Container.find('.results').text('You recieved: ' + myLength + ' results.').css('color', 'black');
 
-//             function notAvl(item){
-//                 if(item.Poster == 'N/A'){
-//                     item.Poster = '';
-//                 }
-//                 return item;
-//             }
-//             context = context.map(notAvl);
+$placeHolder = $('#place_holder');
 
-//             // Pass our data to the template - HANDLEBARS
-//             var theCompiledHtml = theTemplate(data);
+$( '.btn-success' ).on( 'click', function(){ 
+    // Grab the template script - HANDLEBARS
+    var theTemplateScript = $('#my_template_cache').html();
 
-//             // Add the compiled html to the page - HANDLEBARS
-//             $Movies.html(theCompiledHtml);
+    // Compile the template - HANDLEBARS
+    var theTemplate = Handlebars.compile(theTemplateScript);
 
-//             $Movies.show();
-//         });
+    $.ajax({
+            method: 'POST',
+            url: '/cache/information/',
+            data: {
+                'submit': true
+            },
+        })
+        .done(function(data) {
+            $placeHolder.empty();
+
+            var context = {
+                cache:[]
+            };
+
+            for (var i = 0; i < data.length; i++){
+                context['cache'].push({found: data[i]}); 
+            }
+            // Pass our data to the template - HANDLEBARS
+            var theCompiledHtml = theTemplate(context);
+
+            // Add the compiled html to the page - HANDLEBARS
+            $placeHolder.html(theCompiledHtml);
+
+
+            $placeHolder.show();
+        });
+
+});
+
+
+$( '.btn-danger' ).on( 'click', function(){ 
+    $.ajax({
+            method: 'DELETE',
+            url: '/cache/information/',
+            data: {
+                'submit': true
+            },
+        })
+        .done(function(data) {
+            $placeHolder.hide();
+        });
+
+});
 
 </script>
 
