@@ -48,7 +48,7 @@ $('#searchInput').on('keyup', debounce(function(event) {
             })
             .done(function(data) {
 				var context = data['Search'];
-				myLength = context.length;
+				myLength = data['totalResults'];
                 $Movies.empty();
                 $Container.find('.results').text('You recieved: ' + myLength + ' results.').css('color', 'black');
 

@@ -47,41 +47,16 @@ body {
     </nav>
 
 
-    <div class="container">
-        <h1>Hello World!</h1>
-        <input type="text" id="searchInput" name="example" placeholder="ex. Narnia...">
-    </div>
-
-    <div class="container" id="container">
-        <h3 class="results">Your total results will show here!</h3>
-        <ul class="movie_details list-group">
-        </ul>
-    </div>
-
 
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
 
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 
 <script type="text/javascript" src="js/index.js"></script>
 
 </body>
-<!--This is our template. -->
-<!--Data will be inserted in its according place, replacing the brackets.-->
-<script id="my_template" type="text/x-handlebars-template">
-    {{#Search}} 
-        <li class="list-group-item">
-            {{Title}} {{Year}} {{Type}}
-
-            {{#if Poster}}
-                <img src=" {{Poster}} " class="img-rounded" height="100" />           
-            {{/if}}
-        </li>
-    {{/Search}}
-</script>
 
 
 </html>
