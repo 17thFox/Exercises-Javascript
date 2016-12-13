@@ -33,104 +33,23 @@
 
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+
 <script type="text/javascript" src="js/index.js"></script>
 
-<script>
-    function debounce(func, wait, immediate) {
+<!--This is our template. -->
+<!--Data will be inserted in its according place, replacing the brackets.-->
+<script id="my_template" type="text/x-handlebars-template">
+    {{#Search}} 
+        <li>
+            {{Title}} {{Year}} {{Type}}
 
-        var timeout;
-
-        return function() {
-
-            var context = this,
-                args = arguments;
-
-            var callNow = immediate && !timeout;
-
-            clearTimeout(timeout);
-
-            timeout = setTimeout(function() {
-                timeout = null;
-
-                if (!immediate) {
-                    func.apply(context, args);
-                }
-            }, wait);
-
-            if (callNow) func.apply(context, args);
-        };
-    };
-
-
-
-    $Container = $('#container');
-    $Movies = $('.movie_details');
-    $Movies.hide();
-
-
-
-    $('#searchInput').on('keyup', debounce(function(event) {
-        event.preventDefault();
-        var mySearchInput = $('#searchInput').val();
-        if (mySearchInput.length >= 3) {
-            $.ajax({
-                    method: "POST",
-                    url: "/search/movie/",
-                    data: {
-                        movie: mySearchInput
-                    },
-                })
-                .done(function(data) {
-                    $Movies.empty();
-                    var myLength = data.length;
-                    $Container.find('.results').text('You recieved: ' + myLength + ' results.').css('color', 'black');
-
-                    for (var i = 0; i < myLength; i++) {
-                        console.log(data[i].Title);
-                        if (data[i].Poster == 'N/A') {
-                            $Movies.append(
-                                "<li>" + data[i].Title + " (" + data[i].Year + ")  (" + data[i].Type + ")  "
-                            )
-                        } else {
-                            $Movies.append(
-                                "<li>" + data[i].Title + " (" + data[i].Year + ")  (" + data[i].Type + ")  " +
-                                "<img src=" + data[i].Poster + " height = '100' /> </li>"
-                            )
-                        }
-                    }
-                    $Movies.show();
-                });
-
-        } else {
-            $Container.find('.results').text('You must enter at least 3 letters!').css('color', 'red');
-
-        }
-    }, 400));
-
-
-
-
-    // Beginning for dropdown search!
-
-
-    // var changingInput = '';
-    // var $willChange = $("#searchInput");
-    // var currentIndex = 0;
-    // var ddopened = 0;
-    // var visIndex = 0;
-
-
-    // $("#searchInput").on('keyup', function (event){
-    // 	changingInput += $('#searchInput').val();
-    // 	for(var i = 0; i < myLength; i++){
-    // 		if(data[i].Title.includes(changingInput)){
-    // 			var li = document.createElement("li");
-    // 	  		li.appendChild(document.createTextNode(data[i].Title));
-
-    // 	  		continue;
-    // 		}
-    // 	}
-    // }
+            {{#if Poster}}
+                <img src={{Poster}} height='100' />           
+            {{/if}}
+        </li>
+    {{/Search}}
 </script>
+
 
 </html>

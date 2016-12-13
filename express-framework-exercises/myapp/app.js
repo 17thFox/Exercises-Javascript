@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var qhttp = require('q-io/http');
 
+require('handlebars');
+
 var cache = require('lru-cache')({  
     max : 100,                   // The maximum number of items allowed in the cache
     max_age : 1000 * 60 * 60     // The maximum life of a cached item in milliseconds
@@ -27,8 +29,8 @@ app.post('/search/movie', function(req, res) {
 
         qhttp.read(omdbapiURL).then(function(json) {
             var responseJSON = JSON.parse(json);
-    		cache.set(req.body.movie, responseJSON["Search"]);
-            res.send(responseJSON['Search']);
+    		cache.set(req.body.movie, responseJSON);
+            res.send(responseJSON);
         }).then(null, console.error).done();
     } else {
     	res.send(cache.get(req.body.movie));
