@@ -28,7 +28,6 @@ function debounce(func, wait, immediate) {
 };
 
 
-
 $('#searchInput').on('keyup', debounce(function(event) {
     event.preventDefault();
     var mySearchInput = $('#searchInput').val();
@@ -48,7 +47,6 @@ $('#searchInput').on('keyup', debounce(function(event) {
                 },
             })
             .done(function(data) {
-            	// This is the default context, which is passed to the template - HANDLEBARS
 				var context = data['Search'];
 				myLength = context.length;
                 $Movies.empty();
@@ -60,11 +58,7 @@ $('#searchInput').on('keyup', debounce(function(event) {
 	                }
 	                return item;
 	            }
-	            console.log("This is 1 context " + context);
-
-	            console.log("This is context.map(notAvl) " + context.map(notAvl));
 	            context = context.map(notAvl);
-	            console.log("This is 2 context "+context);
 
 				// Pass our data to the template - HANDLEBARS
 				var theCompiledHtml = theTemplate(data);
@@ -81,27 +75,3 @@ $('#searchInput').on('keyup', debounce(function(event) {
     }
 }, 400));
 
-
-
-
-// Beginning for dropdown search!
-
-
-// var changingInput = '';
-// var $willChange = $("#searchInput");
-// var currentIndex = 0;
-// var ddopened = 0;
-// var visIndex = 0;
-
-
-// $("#searchInput").on('keyup', function (event){
-// 	changingInput += $('#searchInput').val();
-// 	for(var i = 0; i < myLength; i++){
-// 		if(data[i].Title.includes(changingInput)){
-// 			var li = document.createElement("li");
-// 	  		li.appendChild(document.createTextNode(data[i].Title));
-
-// 	  		continue;
-// 		}
-// 	}
-// }
