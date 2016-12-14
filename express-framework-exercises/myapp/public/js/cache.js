@@ -1,52 +1,60 @@
-$placeHolder = $('#place_holder');
+(function() {
 
-$('.btn-success').on('click', function() {
-    // Grab the template script - HANDLEBARS
-    var theTemplateScript = $('#my_template_cache').html();
+    $placeHolder = $('#place_holder');
 
-    // Compile the template - HANDLEBARS
-    var theTemplate = Handlebars.compile(theTemplateScript);
+    $(function() {
+        $('.btn-success').on('click', function() {
+            // Grab the template script - HANDLEBARS
+            var theTemplateScript = $('#my_template_cache').html();
 
-    $.ajax({
-            method: 'POST',
-            url: '/cache/information/',
-            data: {
-                'submit': true
-            },
-        })
-        .done(function(data) {
-            $placeHolder.empty();
+            // Compile the template - HANDLEBARS
+            var theTemplate = Handlebars.compile(theTemplateScript);
 
-            var context = {
-                cache: []
-            };
+            $.ajax({
+                    method: 'POST',
+                    url: '/cache/information/',
+                    data: {
+                        'submit': true
+                    },
+                })
+                .done(function(data) {
+                    $placeHolder.empty();
 
-            for (var i = 0; i < data.length; i++) {
-                context['cache'].push({ found: data[i] });
-            }
-            // Pass our data to the template - HANDLEBARS
-            var theCompiledHtml = theTemplate(context);
+                    var context = {
+                        cache: []
+                    };
 
-            // Add the compiled html to the page - HANDLEBARS
-            $placeHolder.html(theCompiledHtml);
+                    for (var i = 0; i < data.length; i++) {
+                        context['cache'].push({ found: data[i] });
+                    }
+                    // Pass our data to the template - HANDLEBARS
+                    var theCompiledHtml = theTemplate(context);
+
+                    // Add the compiled html to the page - HANDLEBARS
+                    $placeHolder.html(theCompiledHtml);
 
 
-            $placeHolder.show();
+                    $placeHolder.show();
+                });
+
         });
+    });
 
-});
 
+    $(function() {
+        $('.btn-danger').on('click', function() {
+            $.ajax({
+                    method: 'DELETE',
+                    url: '/cache/information/',
+                    data: {
+                        'submit': true
+                    },
+                })
+                .done(function(data) {
+                    $placeHolder.hide();
+                });
 
-$('.btn-danger').on('click', function() {
-    $.ajax({
-            method: 'DELETE',
-            url: '/cache/information/',
-            data: {
-                'submit': true
-            },
-        })
-        .done(function(data) {
-            $placeHolder.hide();
         });
+    });
 
-});
+})()

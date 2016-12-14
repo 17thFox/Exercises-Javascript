@@ -1,76 +1,82 @@
-$Container = $('#container');
-$Movies = $('.movie_details');
-$Movies.hide();
+(function() {
 
-function debounce(func, wait, immediate) {
+    $Container = $('#container');
+    $Movies = $('.movie_details');
+    $Movies.hide();
 
-    var timeout;
+    function debounce(func, wait, immediate) {
 
-    return function() {
+        var timeout;
 
-        var context = this,
-            args = arguments;
+        return function() {
 
-        var callNow = immediate && !timeout;
+            var context = this,
+                args = arguments;
 
-        clearTimeout(timeout);
+            var callNow = immediate && !timeout;
 
-        timeout = setTimeout(function() {
-            timeout = null;
+            clearTimeout(timeout);
 
-            if (!immediate) {
-                func.apply(context, args);
-            }
-        }, wait);
+            timeout = setTimeout(function() {
+                timeout = null;
 
-        if (callNow) func.apply(context, args);
-    };
-};
-
-
-$('#searchInput').on('keyup', debounce(function(event) {
-    event.preventDefault();
-    var mySearchInput = $('#searchInput').val();
-
-    // Grab the template script - HANDLEBARS
-    var theTemplateScript = $('#my_template').html();
-
-    // Compile the template - HANDLEBARS
-    var theTemplate = Handlebars.compile(theTemplateScript);
-
-    if (mySearchInput.length >= 3) {
-        $.ajax({
-                method: "POST",
-                url: "/search/movie/",
-                data: {
-                    movie: mySearchInput
-                },
-            })
-            .done(function(data) {
-                var context = data['Search'];
-                myLength = data['totalResults'];
-                $Movies.empty();
-                $Container.find('.results').text('You recieved: ' + myLength + ' results.').css('color', 'black');
-
-                function notAvl(item) {
-                    if (item.Poster == 'N/A') {
-                        item.Poster = '';
-                    }
-                    return item;
+                if (!immediate) {
+                    func.apply(context, args);
                 }
-                context = context.map(notAvl);
+            }, wait);
 
-                // Pass our data to the template - HANDLEBARS
-                var theCompiledHtml = theTemplate(data);
+            if (callNow) func.apply(context, args);
+        };
+    };
 
-                // Add the compiled html to the page - HANDLEBARS
-                $Movies.html(theCompiledHtml);
 
-                $Movies.show();
-            });
+    $(function() {
+        $('#searchInput').on('keyup', debounce(function(event) {
+            event.preventDefault();
+            var mySearchInput = $('#searchInput').val();
 
-    } else {
-        $Container.find('.results').text('You must enter at least 3 letters!').css('color', 'red');
+            // Grab the template script - HANDLEBARS
+            var theTemplateScript = $('#my_template').html();
 
-    }
-}, 400));
+            // Compile the template - HANDLEBARS
+            var theTemplate = Handlebars.compile(theTemplateScript);
+
+            if (mySearchInput.length >= 3) {
+                $.ajax({
+                        method: "POST",
+                        url: "/search/movie/",
+                        data: {
+                            movie: mySearchInput
+                        },
+                    })
+                    .done(function(data) {
+                        var context = data['Search'];
+                        myLength = data['totalResults'];
+                        $Movies.empty();
+                        $Container.find('.results').text('You recieved: ' + myLength + ' results.').css('color', 'black');
+
+                        function notAvl(item) {
+                            if (item.Poster == 'N/A') {
+                                item.Poster = '';
+                            }
+                            return item;
+                        }
+                        context = context.map(notAvl);
+
+                        // Pass our data to the template - HANDLEBARS
+                        var theCompiledHtml = theTemplate(data);
+
+                        // Add the compiled html to the page - HANDLEBARS
+                        $Movies.html(theCompiledHtml);
+
+                        $Movies.show();
+                    });
+
+            } else {
+                $Container.find('.results').text('You must enter at least 3 letters!').css('color', 'red');
+
+            }
+        }, 400));
+    });
+
+})()
