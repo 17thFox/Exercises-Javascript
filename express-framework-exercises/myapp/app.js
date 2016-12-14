@@ -15,6 +15,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 })); // support encoded bodies
 
+hbs.registerPartials(__dirname + '/views/partials');
+
+
 app.set('view engine', 'hbs');
 
 app.set('views', './views');
@@ -22,11 +25,11 @@ app.set('views', './views');
 app.use('/', express.static('public'));
 
 app.get('/', function(req, res) {
-    res.render('index')
+    res.render('index', { indexJS: '<script type="text/javascript" src="/js/index.js"></script>'});
 });
 
 app.get('/cache', function(req, res) {
-    res.render('cache')
+    res.render('cache', { cacheJS: '<script type="text/javascript" src="/js/cache.js"></script>'});
 });
 
 app.post('/cache/information', function(req, res) {
