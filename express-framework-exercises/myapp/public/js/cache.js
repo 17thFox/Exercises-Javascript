@@ -1,7 +1,6 @@
-
 $placeHolder = $('#place_holder');
 
-$( '.btn-success' ).on( 'click', function(){ 
+$('.btn-success').on('click', function() {
     // Grab the template script - HANDLEBARS
     var theTemplateScript = $('#my_template_cache').html();
 
@@ -19,11 +18,11 @@ $( '.btn-success' ).on( 'click', function(){
             $placeHolder.empty();
 
             var context = {
-                cache:[]
+                cache: []
             };
 
-            for (var i = 0; i < data.length; i++){
-                context['cache'].push({found: data[i]}); 
+            for (var i = 0; i < data.length; i++) {
+                context['cache'].push({ found: data[i] });
             }
             // Pass our data to the template - HANDLEBARS
             var theCompiledHtml = theTemplate(context);
@@ -38,7 +37,7 @@ $( '.btn-success' ).on( 'click', function(){
 });
 
 
-$( '.btn-danger' ).on( 'click', function(){ 
+$('.btn-danger').on('click', function() {
     $.ajax({
             method: 'DELETE',
             url: '/cache/information/',
