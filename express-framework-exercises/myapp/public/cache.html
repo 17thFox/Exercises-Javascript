@@ -65,6 +65,9 @@ body {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 
+
+<script type="text/javascript" src="js/cache.js"></script>
+
 </body>
 
 <script id="my_template_cache" type="text/x-handlebars-template">
@@ -73,63 +76,6 @@ body {
             {{found}}
         </li>
     {{/cache}}
-</script>
-
-<script type="text/javascript">
-
-$placeHolder = $('#place_holder');
-
-$( '.btn-success' ).on( 'click', function(){ 
-    // Grab the template script - HANDLEBARS
-    var theTemplateScript = $('#my_template_cache').html();
-
-    // Compile the template - HANDLEBARS
-    var theTemplate = Handlebars.compile(theTemplateScript);
-
-    $.ajax({
-            method: 'POST',
-            url: '/cache/information/',
-            data: {
-                'submit': true
-            },
-        })
-        .done(function(data) {
-            $placeHolder.empty();
-
-            var context = {
-                cache:[]
-            };
-
-            for (var i = 0; i < data.length; i++){
-                context['cache'].push({found: data[i]}); 
-            }
-            // Pass our data to the template - HANDLEBARS
-            var theCompiledHtml = theTemplate(context);
-
-            // Add the compiled html to the page - HANDLEBARS
-            $placeHolder.html(theCompiledHtml);
-
-
-            $placeHolder.show();
-        });
-
-});
-
-
-$( '.btn-danger' ).on( 'click', function(){ 
-    $.ajax({
-            method: 'DELETE',
-            url: '/cache/information/',
-            data: {
-                'submit': true
-            },
-        })
-        .done(function(data) {
-            $placeHolder.hide();
-        });
-
-});
-
 </script>
 
 
