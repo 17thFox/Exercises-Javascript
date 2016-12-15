@@ -27,11 +27,15 @@ app.set('views', './views');
 app.use('/', express.static('public'));
 
 app.get('/', function(req, res) {
-    res.render('index', {title: 'My Index Page', isHomeActive: 'active'});
+    res.render('index', {title: 'My Index Page', 
+                        isActive: {index: true}
+                    });
 });
 
 app.get('/cache', function(req, res) {
-    res.render('cache', {title: 'My Cache Page', isCacheActive: 'active'});
+    res.render('cache', {title: 'My Cache Page', 
+                        isActive: {cache: true}
+                    });
 });
 
 app.post('/cache/information', function(req, res) {
