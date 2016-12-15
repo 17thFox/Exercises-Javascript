@@ -16,7 +16,8 @@ app.use(bodyParser.urlencoded({
 })); // support encoded bodies
 
 hbs.registerPartials(__dirname + '/views/partials');
-
+// Register our {{{block}}} and {{#extend}}{{/extend}} helpers
+require('./block-helpers')(hbs);
 
 app.set('view engine', 'hbs');
 
@@ -25,17 +26,16 @@ app.set('views', './views');
 app.use('/', express.static('public'));
 
 app.get('/', function(req, res) {
-    res.render('index', { indexJS: '<script type="text/javascript" src="/js/index.js"></script>'});
+    res.render('index');
 });
 
 app.get('/cache', function(req, res) {
-    res.render('cache', { cacheJS: '<script type="text/javascript" src="/js/cache.js"></script>'});
+    res.render('cache');
 });
 
 app.post('/cache/information', function(req, res) {
     res.send(cache.keys());
 });
-
 
 app.delete('/cache/information', function(req, res) {
     res.send(cache.reset());
